@@ -89,6 +89,61 @@ public class MergeTwoSortedList {
         return dummyHead.getNext();
     }
 
+    /**
+     * Merge lists one by ones
+     * Convert merge k lists problem to merge 2 lists (k-1) times
+     *
+     * Time complexity : O(kN) where k is the number of linked lists.
+     * Space complexity : O(1).
+     *
+     * @param lists
+     * @return
+     */
+    public static ListNode mergeNLists(ListNode<Integer>[] lists) {
+
+        ListNode<Integer> dummyList = new ListNode<>(0);
+
+        for(ListNode<Integer> list : lists)  {
+            dummyList = recursiveMerge(dummyList, list);
+        }
+
+        return  dummyList;
+
+    }
+
+    /**
+     * Merge K lists with divide and conquer method
+     * This approach walks alongside the one above but is improved a lot
+     * Pair up k lists and merge each pair
+     * After the first pairing, k lists are merged into k/2 lists, with average Nk/2 length
+     * Repeat this procedure until we get the final sorted linked list
+     * Thus, we'll traverse almost NN nodes per pairing and merging, and repeat this procedure about log(k) times.
+     * Time complexity : O(Nlog(k)) where k is the number of linked lists.
+     * Space complexity : O(1)
+     *
+     * {list0, list1, list2, list3, list4}
+     *     |     |      |      |      |                     fist merge
+     *      list0        list2     list4
+     *        |            |         |                      second merge
+     *           list0         list4
+     *             |             |                          third merge
+     *                  list0
+     *
+     * @param lists
+     * @return
+     */
+    public static ListNode mergeKlists(ListNode<Integer>[] lists) {
+        int k = lists.length;
+        int interval = 1;
+        while (interval < k) {
+            for (int i = 0; i < k - interval; i += interval * 2) {
+                lists[i] = recursiveMerge(lists[i], lists[i + interval]);
+            }
+            interval *= 2;
+        }
+        return lists[0];
+    }
+
     public static void main(String... args) {
         ListNode<Integer> head1 = new ListNode<>(1);
         ListNode<Integer> head2 = new ListNode<>(2);
@@ -102,7 +157,8 @@ public class MergeTwoSortedList {
         three.setNext(five);
         System.out.println(head1.toString());
         System.out.println(head2.toString());
-        System.out.println(recursiveMerge(head1, head2));
+//        ListNode<Integer> mergedList1 = recursiveMerge(head1, head2);
+//        System.out.println(mergedList1);
 
 
         ListNode<Integer> head3 = new ListNode<>(10);
@@ -117,7 +173,14 @@ public class MergeTwoSortedList {
         thirty.setNext(fifty);
         System.out.println(head3.toString());
         System.out.println(head4.toString());
-        System.out.println(iterativeMerge(head3, head4));
+
+//        ListNode<Integer> mergedList2 = iterativeMerge(head3, head4);
+//        System.out.println(mergedList2);
+
+        ListNode  listNodes[] = {head1, head2, head3, head4};
+        System.out.println(mergeKlists(listNodes));
+
+
 
 
     }

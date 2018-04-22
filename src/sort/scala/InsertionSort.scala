@@ -81,10 +81,7 @@ object InsertionSort extends  App {
   println(insertionSort3(fruit2))
 
 
-  val compareRationals : (Rational, Rational) => Int = (x, y) => (x.numer * y.denom - y.numer * x.denom)
-
-
-  implicit val rationalOrder : Ordering[Rational] = (x, y) => compareRationals(x, y)
+  implicit val rationalOrder : Ordering[Rational] = (x, y) => (x.numer * y.denom - y.numer * x.denom)
 
   val half = new Rational(1, 2)
   val third = new Rational(1, 3)

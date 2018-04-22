@@ -1,5 +1,11 @@
 package sort.scala.divideConquer
 
+/**
+  * Worst - O(n^2)
+  * Best - O(n log n)
+  * Average - O(n log n)
+  *
+  * */
 object QuickSort extends App {
 
 

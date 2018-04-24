@@ -1,4 +1,4 @@
-package sort.scala.divideConquer
+package sort.scala
 
 /**
   * Worst - O(n^2)

@@ -11,11 +11,18 @@ public class BinarySearch {
     }
 
     private static int binarySearch(int arr[], int l, int r, int key) {
-        if (r >= 1) {
-            int mid = (r + l)/2;
-            if(arr[mid] == key) {
+        if (l <= r)
+        {
+            int mid = l + (r - l)/2;
 
-            }
+            if(arr[mid] == key)
+                return mid;
+
+            if(key < arr[mid])
+                return binarySearch(arr, l, mid - 1, key);
+
+            return binarySearch(arr, mid + 1, r, key);
+
         }
         return -1;
     }
@@ -23,8 +30,12 @@ public class BinarySearch {
     public static void main(String... args) {
         int[] a = {7,8,9,1,2,3,10,23,0};
         BubbleSort.bubbleSort(a);
-        int key = 11;
+        int key = 22;
         Arrays.stream(a).forEach(System.out::println);
-        System.out.println(String.format("found key : %d", search(a, key)));
+        int midIndex = search(a, key);
+        if (midIndex == -1)
+            System.out.println("no key found");
+        else
+            System.out.println(String.format("key found at position : %d", midIndex));
     }
 }

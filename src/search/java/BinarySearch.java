@@ -6,6 +6,13 @@ import java.util.Arrays;
 
 public class BinarySearch {
 
+    /**
+     * time complexity O(log n)
+     * space complexity O(1) in place search algorithm
+     * @param array
+     * @param key
+     * @return index of the key
+     */
     public static int search(int[] array, int key) {
         return  binarySearch(array, 0, array.length -1, key);
     }

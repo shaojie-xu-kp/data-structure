@@ -5,6 +5,13 @@ import scala.annotation.tailrec
 object BinarySearch extends App {
 
 
+  /**
+    * time complexity O(log n)
+    * space complexity O(1) in place search algorithm
+    * @param arr
+    * @param key
+    * @return index of the key
+    */
   def search(arr: Array[Int], key : Int) : Int = {
     @tailrec
     def binarySearch(minIndex: Int, maxIndex: Int): Int = {

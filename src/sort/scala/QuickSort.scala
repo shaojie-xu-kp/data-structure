@@ -55,7 +55,7 @@ object QuickSort extends App {
   println(quickSortOrdring(fruits))
   println(quickSortOrdered(fruits))
 
-  val employee = List(Person("Jack",21), Person("Angela", 58), Person("Jacopo", 30), Person("Anna", 20), Person("Ian",45))
+  val employee = List(Person("Jack",21), Person("Angela", 58), Person("Jacopo", 30), Person("Anna", 20), Person("Ian",45), Person("Shaojie"))
   println(quickSortOrdered(employee))
 
   implicit val orderByAge : Ordering[Person] = (p1, p2) => p1.age - p2.age
@@ -70,5 +70,15 @@ object QuickSort extends App {
 }
 
 case class Person(name : String, age : Int) extends Ordered[Person] {
+
+  def this(name: String) {
+    this(name, 30)
+  }
+
   override def compare(that: Person): Int = name.compare(that.name)
+}
+
+object Person {
+  def apply(name: String, age: Int) = new Person(name, age)
+  def apply(name : String) = new Person(name)
 }

@@ -65,7 +65,7 @@ object InsertionSort extends  App {
 
     xs match {
       case List() => List()
-      case y :: ys => insert(y, insertionSort3(ys)(ord))
+      case y :: ys => insert(y, insertionSort3(ys))
     }
   }
 

@@ -13,12 +13,10 @@ public class InsertionSort {
     private static void insertionSort(int[] array) {
         int length = array.length;
         for (int key = 1; key < length; key++) {
-            for (int j = key; j > 0; j--) {
-                if (array[j] < array[j - 1]) {
+            for (int j = key; j > 0 && array[j] < array[j - 1]; j--) {
                     int temp = array[j];
                     array[j] = array[j - 1];
                     array[j - 1] = temp;
-                }
             }
         }
     }

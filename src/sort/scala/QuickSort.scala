@@ -79,6 +79,5 @@ case class Person(name : String, age : Int) extends Ordered[Person] {
 }
 
 object Person {
-  def apply(name: String, age: Int) = new Person(name, age)
   def apply(name : String) = new Person(name)
 }

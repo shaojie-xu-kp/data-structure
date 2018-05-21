@@ -98,8 +98,8 @@ public class AVLTree {
     public void printPreOrder(AVLNode node){
         if (Objects.nonNull(node)) {
             System.out.print(node.key + " ");
-            printInOrder(node.left);
-            printInOrder(node.right);
+            printPreOrder(node.left);
+            printPreOrder(node.right);
         }
     }
 
@@ -111,9 +111,15 @@ public class AVLTree {
         tree.root = tree.insert(tree.root, 40);
         tree.root = tree.insert(tree.root, 50);
         tree.root = tree.insert(tree.root, 25);
+        tree.root = tree.insert(tree.root, 12);
+        tree.root = tree.insert(tree.root, 21);
+        tree.root = tree.insert(tree.root, 2);
+        tree.root = tree.insert(tree.root, 55);
 
+        System.out.print("print pre order : ");
         tree.printPreOrder(tree.root);
-        System.out.println("============================");
+        System.out.println();
+        System.out.print("print in order : ");
         tree.printInOrder(tree.root);
     }
 

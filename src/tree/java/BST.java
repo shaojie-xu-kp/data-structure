@@ -12,14 +12,17 @@ public class BST {
         root.insert(2);
         root.insert(12);
         root.insert(35);
+        root.insert(32);
+        root.insert(31);
+        root.insert(33);
         root.insert(50);
+        root.insert(40);
+        root.insert(55);
         root.printInOrder();
         System.out.print('\n');
         System.out.println(root.contains(11));
-        BSTNode<Integer> node20 = root.getNode(20);
-        node20.printInOrder();
         System.out.print('\n');
-        root.remove(20);
+        root.remove(35);
         root.printPreOrder();
 
     }

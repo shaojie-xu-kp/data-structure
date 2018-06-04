@@ -63,29 +63,95 @@ public class AVLTree {
         int balanceFactor = getBalanceFactor(node);
 
         // right rotate
-        if(balanceFactor > 1 && node.left.key > value) {
+        if(balanceFactor > 1 && getBalanceFactor(node.left) >= 0) {
             return rightRotate(node);
         }
 
         // left right rotate
-        if (balanceFactor > 1 && node.left.key < value) {
+        if (balanceFactor > 1 && getBalanceFactor(node.left) < 0) {
             node.left = leftRotate(node.left);
             return rightRotate(node);
         }
 
         // left rotate
-        if(balanceFactor < -1 && node.right.key < value) {
+        if(balanceFactor < -1 && getBalanceFactor(node.right) <= 0) {
             return leftRotate(node);
         }
 
         // right left rotate
-        if (balanceFactor < -1 && node.right.key > value) {
+        if (balanceFactor < -1 && getBalanceFactor(node.right) > 0) {
             node.right = rightRotate(node.right);
             return leftRotate(node);
         }
 
         return node;
     }
+
+    public AVLNode delete(AVLNode node, int value) {
+        if (Objects.isNull(node)) {
+            return node;
+        }
+
+        if (node.key < value) {
+            node.right =  delete(node.right, value);
+        } else if (node.key > value) {
+            node.left =  delete(node.left, value);
+        } else {
+            if (Objects.isNull(node.left)) {
+                return node.right;
+            } else if (Objects.isNull(node.right)) {
+                return node.left;
+            }
+
+            AVLNode rightSuccessor = rightSuccessor(node);
+            node.key = rightSuccessor.key;
+            node.right = delete(node.right, node.key);
+        }
+
+        node.height = max(getNodeHeight(node.left), getNodeHeight(node.right)) + 1;
+
+        int balanceFactor = getBalanceFactor(node);
+
+        // right rotate
+        if(balanceFactor > 1 && getBalanceFactor(node.left) >= 0) {
+            return rightRotate(node);
+        }
+
+        // left right rotate
+        if (balanceFactor > 1 && getBalanceFactor(node.left) < 0) {
+            node.left = leftRotate(node.left);
+            return rightRotate(node);
+        }
+
+        // left rotate
+        if(balanceFactor < -1 && getBalanceFactor(node.right) <= 0) {
+            return leftRotate(node);
+        }
+
+        // right left rotate
+        if (balanceFactor < -1 && getBalanceFactor(node.right) > 0) {
+            node.right = rightRotate(node.right);
+            return leftRotate(node);
+        }
+
+
+        return node;
+    }
+
+
+    private AVLNode rightSuccessor(AVLNode node) {
+        if (node == null)
+            return null;
+        else if (node.right != null) {
+            AVLNode p = node.right;
+            while (p.left != null)
+                p = p.left;
+            return p;
+        } else {
+            return null;
+        }
+    }
+
 
     public void printInOrder(AVLNode node){
         if (Objects.nonNull(node)) {
@@ -121,6 +187,16 @@ public class AVLTree {
         System.out.println();
         System.out.print("print in order : ");
         tree.printInOrder(tree.root);
+        System.out.println();
+        System.out.print("print pre order after first deletion, no rotation happens: ");
+        tree.root = tree.delete(tree.root, 50);
+        tree.printPreOrder(tree.root);
+        System.out.println();
+        System.out.print("print pre order after deletion, rotation triggered: ");
+        tree.root = tree.delete(tree.root, 55);
+        tree.printPreOrder(tree.root);
+
+
     }
 
 

@@ -18,7 +18,8 @@ import static tree.java.Color.RED;
  * 2. rotation in case aunt is black
  * here null node is considered as black
  *
- * Below is the iterative version of implementation
+ * Below is an iterative version of implementation, you will find the similarities
+ * to the java.util.TreeMap implementation of JDK source
  *
  *
  */
@@ -29,21 +30,28 @@ public class RedBlackTree<K extends Comparable<K>, V> {
     public static void main(String[] args) {
 
         RedBlackTree<Integer, String> tree = new RedBlackTree();
-        tree.insert(1,"test");
+        tree.insert(10,"test");
+        tree.insert(20,"test");
+        tree.insert(30,"test");
+        tree.insert(40,"test");
+        tree.insert(50,"test");
+        tree.insert(51,"test");
+        tree.insert(48,"test");
+        tree.insert(50,"test");
+        tree.insert(25,"test");
+        tree.insert(12,"test");
+        tree.insert(21,"test");
         tree.insert(2,"test");
-        tree.insert(3,"test");
-        tree.insert(4,"test");
-        tree.insert(5,"test");
-        tree.insert(6,"test");
-
+        tree.insert(55,"test");
+        tree.insert(60,"test");
+        tree.insert(90,"test");
+        tree.insert(61,"test");
 
         System.out.print("print pre order : ");
         tree.printPreOrder(tree.root);
         System.out.println();
         System.out.print("print in order : ");
         tree.printInOrder(tree.root);
-
-
 
     }
 
@@ -100,40 +108,76 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         return value;
     }
 
-    /** From CLR */
+    /**
+     * fix up the whole tree after each insertion starting from the newly inserted node
+     * first check if there are adjacent RED nodes
+     * if so, rule is broken and two things should be done:
+     * 1. color flipping if aunt is RED
+     *    set parent to BLACK
+     *    set aunt to BLACK
+     *    set grandparent to RED
+     * 2. rotation if aunt is BLACK
+     *    2.1 left-left   case -> right rotate grandparent
+     *    2.2 left-right  case -> left rotate parent, then right rotate grandparent
+     *    2.3 right-left  case -> right rotate parent, then left rotate grandparent
+     *    2.4 right-right case -> left rotate grandparent
+     *
+     * at the end, always set root to BLACK
+     *
+     * @param x
+     */
     private void fixAfterInsertion(RBNode<K,V> x) {
 
         x.color = RED;
 
+        // while there is adjacent RED node
         while (x != null && x != root && x.parent.color.equals(RED)) {
+            // if your parent is the left child of the grandparent node
+            // then we will have either left-left case or left-right case
             if (parentOf(x) == leftOf(parentOf(parentOf(x)))) {
+                // the aunt of the newly inserted node
                 RBNode<K,V> y = rightOf(parentOf(parentOf(x)));
+                // if it is RED, meaning we have to do a color flipping
                 if (colorOf(y) == RED) {
+                    // set color of parent to black
                     setColor(parentOf(x), BLACK);
+                    // set the color of aunt to black
                     setColor(y, BLACK);
+                    // set grandparent to red
                     setColor(parentOf(parentOf(x)), RED);
+                    // move on to check the grandparent
                     x = parentOf(parentOf(x));
+                    // if the aunt is not RED, then BLACK, meaning we do a rotation
                 } else {
+                    // check if the current node is a right child
+                    // if so, since we are at the left of the unbalance tree, it is the case left-right case
+                    // we do a left rotation of the parent node
                     if (x == rightOf(parentOf(x))) {
                         x = parentOf(x);
                         rotateLeft(x);
                     }
+                    // it is the left-left case, we only do a right rotation
+                    // before doing a rotate, fix the color first
                     setColor(parentOf(x), BLACK);
                     setColor(parentOf(parentOf(x)), RED);
                     rotateRight(parentOf(parentOf(x)));
                 }
-            } else {
+            } else { // if your parent is the right child of the grandparent node, we will have either right-left case, or right-right case
+                // y is the aunt
                 RBNode<K,V> y = leftOf(parentOf(parentOf(x)));
+                // if aunt is RED, color flipping
                 if (colorOf(y) == RED) {
                     setColor(parentOf(x), BLACK);
                     setColor(y, BLACK);
                     setColor(parentOf(parentOf(x)), RED);
                     x = parentOf(parentOf(x));
                 } else {
+                    // right-left case, do right rotation of the parent node
                     if (x == leftOf(parentOf(x))) {
                         x = parentOf(x);
                         rotateRight(x);
                     }
+                    // right-right case, simply a left rotation will do the magic
                     setColor(parentOf(x), BLACK);
                     setColor(parentOf(parentOf(x)), RED);
                     rotateLeft(parentOf(parentOf(x)));
@@ -165,6 +209,13 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         return (p == null) ? null: p.right;
     }
 
+    /**
+     * left rotate of node
+     * bring up the right child of the p to one level up by linking the parent of p to parent of p's right child
+     * link the left child of the right child to the right child of p
+     * and fix up the parent linkages
+     * @param p node to be left rotated
+     */
     private void rotateLeft(RBNode<K,V> p) {
         if (p != null) {
             RBNode<K,V> r = p.right;
@@ -187,18 +238,19 @@ public class RedBlackTree<K extends Comparable<K>, V> {
         if (p != null) {
             RBNode<K,V> l = p.left;
             p.left = l.right;
-            if (l.right != null) l.right.parent = p;
+            if (l.right != null)
+                l.right.parent = p;
             l.parent = p.parent;
             if (p.parent == null)
                 root = l;
             else if (p.parent.right == p)
                 p.parent.right = l;
-            else p.parent.left = l;
+            else
+                p.parent.left = l;
             l.right = p;
             p.parent = l;
         }
     }
-
 
 }
 

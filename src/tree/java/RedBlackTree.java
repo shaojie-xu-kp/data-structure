@@ -6,7 +6,7 @@ import static tree.java.Color.BLACK;
 import static tree.java.Color.RED;
 
 /**
- * properties or RBT:
+ * properties of RBT:
  *
  * 1. each node is neither black or red
  * 2. root is always black

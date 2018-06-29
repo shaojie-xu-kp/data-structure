@@ -2,7 +2,7 @@ package tree.java;
 
 import java.util.Objects;
 
-public class BST {
+public class BinarySearchTree {
 
     public static void main(String... args) {
         BSTNode<Integer> root = new BSTNode<>(30);

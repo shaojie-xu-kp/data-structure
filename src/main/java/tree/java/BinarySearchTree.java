@@ -1,6 +1,6 @@
 package tree.java;
 
-import java.util.Objects;
+import java.util.*;
 
 public class BinarySearchTree {
 
@@ -18,12 +18,20 @@ public class BinarySearchTree {
         root.insert(50);
         root.insert(40);
         root.insert(55);
-        root.printInOrder();
+        root.inOrderTraversalRec();
         System.out.print('\n');
         System.out.println(root.contains(11));
         System.out.print('\n');
         root.remove(35);
-        root.printPreOrder();
+        System.out.println("\npre order traversal : ");
+        root.preOrderTravesalRec();
+        System.out.println("\npre order traversal : ");
+        root.preOrderTraversal();
+        System.out.println("\nin order traversal : ");
+        root.inOrderTraversal();
+        System.out.println("\nlevel order traversal : ");
+        root.levelOrderTraversal();
+
 
     }
 
@@ -129,16 +137,78 @@ class BSTNode<T extends Comparable<T>> {
     }
 
 
-    public void printInOrder() {
-        if (Objects.nonNull(left)) left.printInOrder();
+    public void inOrderTraversalRec() {
+        if (Objects.nonNull(left)) left.inOrderTraversalRec();
         System.out.print(value + " ");
-        if (Objects.nonNull(right)) right.printInOrder();
+        if (Objects.nonNull(right)) right.inOrderTraversalRec();
     }
 
-    public void printPreOrder() {
+    public void preOrderTravesalRec() {
         System.out.print(value + " ");
-        if (Objects.nonNull(left)) left.printPreOrder();
-        if (Objects.nonNull(right)) right.printPreOrder();
+        if (Objects.nonNull(left)) left.preOrderTravesalRec();
+        if (Objects.nonNull(right)) right.preOrderTravesalRec();
+    }
+
+
+    public void preOrderTraversal() {
+
+        if (Objects.isNull(this)) return;
+
+        Deque<BSTNode> printStack = new ArrayDeque<BSTNode>();
+        printStack.push(this);
+
+        while(!printStack.isEmpty()) {
+
+            BSTNode node = printStack.pop();
+            System.out.print(node.value + " ");
+
+            if(Objects.nonNull(node.right))
+                printStack.push(node.right);
+            if(Objects.nonNull(node.left))
+                printStack.push(node.left);
+
+        }
+    }
+
+    void levelOrderTraversal() {
+
+        if (Objects.isNull(this)) return;
+
+        Queue<BSTNode> queue = new LinkedList<>();
+        queue.add(this);
+
+        while (!queue.isEmpty()) {
+            BSTNode node = queue.poll();
+            System.out.print(node.value + " ");
+
+            if(Objects.nonNull(node.left))
+                queue.add(node.left);
+
+            if(Objects.nonNull(node.right))
+                queue.add(node.right);
+
+        }
+    }
+
+    public void inOrderTraversal() {
+
+        Deque<BSTNode> nodes = new ArrayDeque<>();
+        BSTNode current = this;
+
+        while (!nodes.isEmpty() || current != null) {
+
+            if (current != null) {
+                nodes.push(current);
+                current = current.left;
+            } else {
+                BSTNode node = nodes.pop();
+                System.out.printf("%s ", node.value);
+                current = node.right;
+            }
+
+        }
+
+
     }
 
 

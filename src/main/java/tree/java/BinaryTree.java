@@ -1,12 +1,14 @@
 package tree.java;
 
+import java.util.LinkedList;
 import java.util.Objects;
+import java.util.Queue;
 
-public class BinaryTree<T extends Comparable<T>> {
+public class BinaryTree {
 
-    private Node<T> root;
+    private Node root;
 
-    public int height(Node<T> root){
+    public int height(Node root){
         if(Objects.isNull(root))
             return 0;
         else {
@@ -18,7 +20,7 @@ public class BinaryTree<T extends Comparable<T>> {
     }
 
     /* Get width of a given level */
-    int getWidth(Node<T> node, int level)  {
+    int getWidth(Node node, int level)  {
         if (node == null)
             return 0;
         if (level == 1)
@@ -42,9 +44,30 @@ public class BinaryTree<T extends Comparable<T>> {
         return maxWidth;
     }
 
+    void levelOrderTravesal() {
+        if (Objects.isNull(root)) return;
+
+        Queue<Node> queue = new LinkedList<>();
+        queue.add(root);
+
+        while (!queue.isEmpty()) {
+            Node nodeRemoved = queue.remove();
+            System.out.println(nodeRemoved.data);
+
+            if (!Objects.isNull(nodeRemoved.left))
+                queue.add(nodeRemoved.left);
+
+            if (!Objects.isNull(nodeRemoved.right))
+                queue.add(nodeRemoved.right);
+
+        }
+    }
+
+
+
     public static void main(String... args) {
-        BinaryTree<Integer> tree = new BinaryTree<>();
-        tree.root = new Node<>(1);
+        BinaryTree tree = new BinaryTree();
+        tree.root = new Node(1);
         tree.root.left = new Node(2);
         tree.root.right = new Node(3);
         tree.root.left.left = new Node(4);
@@ -52,18 +75,20 @@ public class BinaryTree<T extends Comparable<T>> {
         tree.root.right.right = new Node(8);
         tree.root.right.right.left = new Node(6);
         tree.root.right.right.right = new Node(7);
-        System.out.println(tree.getMaxWidth(tree.root));
+        System.out.println("the max width : " + tree.getMaxWidth(tree.root));
+        System.out.println("level order traversal: ");
+        tree.levelOrderTravesal();
     }
 
 
 }
 
 
-class Node<T extends Comparable<T>>
+class Node
 {
-    T data;
+    int data;
     Node left, right;
-    public Node(T item)
+    public Node(int item)
     {
         data = item;
         left = right = null;

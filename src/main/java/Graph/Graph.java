@@ -5,6 +5,7 @@ import lombok.ToString;
 import java.util.ArrayDeque;
 import java.util.Deque;
 import java.util.LinkedList;
+import java.util.Queue;
 
 @ToString
 public class Graph {
@@ -30,7 +31,7 @@ public class Graph {
         // mark all un-visited
         boolean[] visited = new boolean[verticesNumber];
 
-        LinkedList<Integer> queue = new LinkedList<>();
+        Queue<Integer> queue = new LinkedList<>();
 
         visited[startVertice] = true;
         queue.add(startVertice);
@@ -43,7 +44,7 @@ public class Graph {
             for(Integer vertice : adj[verticeToVisit]) {
                 if (!visited[vertice]) {
                     visited[vertice] = true;
-                    queue.push(vertice);
+                    queue.add(vertice);
                 }
             }
         }

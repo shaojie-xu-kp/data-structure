@@ -41,8 +41,8 @@ public class QuickSort {
             }
         }
 
-        while (high > first && list[high] >= pivot)
-            high--;
+//        while (high > first && list[high] >= pivot)
+//            high--;
 
         // Swap pivot with list[high]
         if (pivot > list[high]) {
